@@ -22,7 +22,7 @@
   "main": "./lib/recurly.js",
   "dependencies": {
     "xml2js": "0.4.18",
-    "js2xml": "git://github.com/SocialBro/js2xml"
+    "js2xml": "https://github.com/AudienseCo/js2xml"
   },
   "engines": {
     "node": ">= 0.4"
