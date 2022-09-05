@@ -21,8 +21,7 @@
   },
   "main": "./lib/recurly.js",
   "dependencies": {
-    "xml2js": "0.4.18",
-    "js2xml": "https://github.com/AudienseCo/js2xml"
+    "xml2js": "0.4.18"
   },
   "engines": {
     "node": ">= 0.4"
