@@ -1,0 +1,45 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Npm Install
+        run: |
+          npm install
+
+      - name: Test
+        run: |
+          npm run test
+
+      - name: Notify failed in Slack
+        if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2.0.2
+        env:
+          SLACK_CHANNEL: apps_alerts
+          SLACK_COLOR: danger
+          SLACK_ICON_EMOJI: ':rocket:'
+          SLACK_MESSAGE: '[Build step failed] ${{ github.event.head_commit.message }}'
+          SLACK_USERNAME: '${{ github.event.repository.name }}'
+          SLACK_WEBHOOK: ${{ secrets.PRODUCTION_SLACK_WEBHOOK }}
+
+      - name: Notify success in Slack
+        if: ${{ success() }}
+        uses: rtCamp/action-slack-notify@v2.0.2
+        env:
+          SLACK_CHANNEL: monorail-staging
+          SLACK_COLOR: good
+          SLACK_ICON_EMOJI: ':rocket:'
+          SLACK_MESSAGE: '[Deploy successful] ${{ github.event.head_commit.message }}'
+          SLACK_USERNAME: github-actions-staging
+          SLACK_WEBHOOK: ${{ secrets.STAGING_SLACK_WEBHOOK }}
